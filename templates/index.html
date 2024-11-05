@@ -33,20 +33,30 @@
     </div>
 
     <script>
-        function selectFolder(inputId, pickerId) {
-            const folderPicker = document.getElementById(pickerId);
-            folderPicker.value = "";  // Reset the file input value to trigger new selection
-            folderPicker.click();     // Open the folder dialog
-        }
-
-        function setFolderPath(inputId, pickerId) {
-            const folderPicker = document.getElementById(pickerId);
-            if (folderPicker.files.length > 0) {  // Ensure that a folder was selected
-                const path = folderPicker.files[0].webkitRelativePath.split("/")[0];
-                document.getElementById(inputId).value = path;
-            } else {
-                console.error("No folder was selected.");
-            }
+        function selectFolder(inputId) {
+            // Dynamically create a new file input element
+            const folderPicker = document.createElement("input");
+            folderPicker.type = "file";
+            folderPicker.style.display = "none";
+            folderPicker.setAttribute("webkitdirectory", "");
+            folderPicker.setAttribute("directory", "");
+    
+            // Attach an onchange event to handle the selected folder path
+            folderPicker.addEventListener("change", function() {
+                if (folderPicker.files.length > 0) {
+                    // Get the folder path from the selected file's relative path
+                    const path = folderPicker.files[0].webkitRelativePath.split("/")[0];
+                    document.getElementById(inputId).value = path;
+                } else {
+                    console.error("No folder was selected.");
+                }
+                // Remove the temporary file input from the DOM
+                document.body.removeChild(folderPicker);
+            });
+    
+            // Add the folder picker to the DOM and trigger the click event
+            document.body.appendChild(folderPicker);
+            folderPicker.click();
         }
     </script>
 </body>
