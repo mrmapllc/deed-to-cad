@@ -1,51 +1,34 @@
-import subprocess
 import os
-import sys
+import subprocess
+from flask import Flask, render_template, request, redirect, url_for
 
-def main(input_folder, output_folder):
-    # Paths to scripts
-    ai_extraction_script = os.path.join("G:\\aineer_folder\\scripts", "ai_extraction.py")
-    create_dwg_script = os.path.join("G:\\aineer_folder\\scripts", "create_dwg_from_bearings.py")
-    
-    # Check if the given folder exists
-    if not os.path.exists(input_folder):
-        print(f"Error: The folder '{input_folder}' does not exist.")
-        return
-    
-    # Check if the output folder exists, if not, create it
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-        print(f"Created output folder: {output_folder}")
+app = Flask(__name__)
 
-    # List all PDF files in the given folder
-    pdf_paths = [os.path.join(input_folder, file) for file in os.listdir(input_folder) if file.lower().endswith('.pdf')]
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        input_folder = os.path.abspath(request.form["input_folder"])  # Ensure absolute path
+        output_folder = os.path.abspath(request.form["output_folder"])  # Ensure absolute path
 
-    if not pdf_paths:
-        print(f"No PDF files found in folder '{input_folder}'.")
-        return
+        # Check if folders exist
+        if not os.path.exists(input_folder):
+            return "Input folder does not exist. Please try again.", 400
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)  # Create output folder if it doesn't exist
 
-    # Process each PDF file found in the folder
-    for pdf_path in pdf_paths:
-        print(f"Processing file: {pdf_path}")
+        # Path to the main_script.py in the scripts directory
+        main_script_path = os.path.join("G:\\aineer_folder\\scripts", "main_script.py")
 
-        # Define the path for ai_output.json in the output folder
-        json_output_path = os.path.join(output_folder, "ai_output.json")
+        # Run main_script.py with specified folders
+        try:
+            result = subprocess.run(['python', main_script_path, input_folder, output_folder], check=True, capture_output=True, text=True)
+            print(result.stdout)  # Optionally log the script's output
+        except subprocess.CalledProcessError as e:
+            # Capture and display the error message
+            error_msg = f"An error occurred: {e}\nOutput: {e.output}\nError: {e.stderr}"
+            print(error_msg)
+            return error_msg, 500
 
-        # Run AI Extraction Script with the specified output path for ai_output.json
-        subprocess.run(['python', ai_extraction_script, pdf_path, json_output_path])
+        return redirect(url_for("index"))
 
-        # Define the DXF output file path
-        dxf_output_path = os.path.join(output_folder, os.path.splitext(os.path.basename(pdf_path))[0] + ".dxf")
-        
-        # Run DWG Creation Script with the paths to the JSON output file and DXF output file
-        subprocess.run(['python', create_dwg_script, json_output_path, dxf_output_path])
-
-if __name__ == "__main__":
-    # Ensure both input and output paths are provided
-    if len(sys.argv) != 3:
-        print("Usage: python main_script.py <input_folder> <output_folder>")
-        sys.exit(1)
-
-    input_folder = sys.argv[1]
-    output_folder = sys.argv[2]
-    main(input_folder, output_folder)
+    return render_template("index.html")
