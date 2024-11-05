@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate CAD from deed</title>
+    <title>Deed to CAD</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Generate CAD from deed</h1>
+        <h1>Deed to CAD</h1>
         <form action="/" method="post">
             <!-- Input Folder Section -->
             <label for="input_folder">Input Folder Path:</label>
@@ -24,7 +24,7 @@
                 <button type="button" onclick="selectFolder('output_folder')">Browse</button>
             </div>
 
-            <button type="submit">Generate CAD from deed</button>
+            <button type="submit">Process Files</button>
         </form>
 
         <!-- Hidden file input for folder selection -->
@@ -32,7 +32,6 @@
     </div>
 
     <script>
-        // JavaScript to handle folder selection
         function selectFolder(inputId) {
             const folderPicker = document.getElementById("folderPicker");
             folderPicker.setAttribute("data-target", inputId); // Store the target input field ID
