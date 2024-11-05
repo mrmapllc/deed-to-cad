@@ -34,16 +34,23 @@
     <script>
         function selectFolder(inputId) {
             const folderPicker = document.getElementById("folderPicker");
-            folderPicker.setAttribute("data-target", inputId); // Store the target input field ID
-            folderPicker.click(); // Trigger click to open folder dialog
+            folderPicker.setAttribute("data-target", inputId);
+            folderPicker.click();
         }
-
+    
         function setFolderPath() {
             const folderPicker = document.getElementById("folderPicker");
             const inputId = folderPicker.getAttribute("data-target");
-            const path = folderPicker.files[0].webkitRelativePath.split("/")[0]; // Get the selected folder path
-            document.getElementById(inputId).value = path;
+            
+            if (folderPicker.files.length > 0) {  // Check if a folder was actually selected
+                // Extract the folder path from the first selected file’s relative path
+                const path = folderPicker.files[0].webkitRelativePath.split("/")[0];
+                document.getElementById(inputId).value = path;
+            } else {
+                console.error("No folder was selected.");
+            }
         }
     </script>
+
 </body>
 </html>
