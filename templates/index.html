@@ -10,49 +10,54 @@
     <div class="container">
         <h1>Deed to CAD</h1>
         <form action="/" method="post">
-
             <!-- Input Folder Section -->
             <label for="input_folder">Input Folder Path:</label>
-            <div class="folder-picker">
-                <input type="text" id="input_folder" name="input_folder" required>
-                <button type="button" onclick="selectFolder('input_folder', 'inputFolderPicker')">Browse</button>
-            </div>
+            <input type="text" id="input_folder" name="input_folder" required>
+            <button type="button" onclick="selectInputFolder()">Browse</button>
             
             <!-- Output Folder Section -->
             <label for="output_folder">Output Folder Path:</label>
-            <div class="folder-picker">
-                <input type="text" id="output_folder" name="output_folder" required>
-                <button type="button" onclick="selectFolder('output_folder', 'outputFolderPicker')">Browse</button>
-            </div>        
-            
-            <button type="submit">Process Files</button>
+            <input type="text" id="output_folder" name="output_folder" required>
+            <button type="button" onclick="selectOutputFolder()">Browse</button>
         </form>
 
-        <!-- Separate file inputs for Input and Output folders -->
-        <input type="file" id="inputFolderPicker" webkitdirectory directory style="display: none;" onchange="setFolderPath('input_folder', 'inputFolderPicker')">
-        <input type="file" id="outputFolderPicker" webkitdirectory directory style="display: none;" onchange="setFolderPath('output_folder', 'outputFolderPicker')">
-
+        <!-- Separate hidden file inputs for Input and Output folders -->
+        <input type="file" id="inputFolderPicker" style="display: none;" webkitdirectory directory onchange="handleInputFolderChange()">
+        <input type="file" id="outputFolderPicker" style="display: none;" webkitdirectory directory onchange="handleOutputFolderChange()">
     </div>
 
     <script>
-        function selectFolder(inputId, pickerId) {
-            const folderPicker = document.getElementById(pickerId);
-            folderPicker.value = "";  // Reset previous selection to ensure fresh selection
-            folderPicker.setAttribute("data-target", inputId);
-            folderPicker.click();
+        function selectInputFolder() {
+            const inputPicker = document.getElementById("inputFolderPicker");
+            inputPicker.value = "";  // Reset the input to force new selection
+            inputPicker.click();
         }
-    
-        function setFolderPath(inputId, pickerId) {
-            const folderPicker = document.getElementById(pickerId);
-    
-            if (folderPicker.files.length > 0) {  // Ensure a folder is selected
-                const path = folderPicker.files[0].webkitRelativePath.split("/")[0];
-                document.getElementById(inputId).value = path;
+
+        function selectOutputFolder() {
+            const outputPicker = document.getElementById("outputFolderPicker");
+            outputPicker.value = "";  // Reset the input to force new selection
+            outputPicker.click();
+        }
+
+        function handleInputFolderChange() {
+            const inputPicker = document.getElementById("inputFolderPicker");
+            if (inputPicker.files.length > 0) {
+                const path = inputPicker.files[0].webkitRelativePath.split("/")[0];
+                document.getElementById("input_folder").value = path;
             } else {
-                console.error(`No folder selected for ${inputId}.`);
+                console.error("No input folder was selected.");
+            }
+        }
+
+        function handleOutputFolderChange() {
+            const outputPicker = document.getElementById("outputFolderPicker");
+            if (outputPicker.files.length > 0) {
+                const path = outputPicker.files[0].webkitRelativePath.split("/")[0];
+                document.getElementById("output_folder").value = path;
+            } else {
+                console.error("No output folder was selected.");
             }
         }
     </script>
-
 </body>
 </html>
