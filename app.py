@@ -1,6 +1,10 @@
 import os
 import subprocess
 from flask import Flask, render_template, request, redirect, url_for
+from flask_cors import CORS
+from ai_extraction import process_pdf_files
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 CORS(app)
