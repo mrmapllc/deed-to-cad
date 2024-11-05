@@ -3,6 +3,7 @@ import subprocess
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -45,3 +46,7 @@ def index():
         return redirect(url_for("index"))
 
     return render_template("index.html")
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))  # Render uses PORT environment variable
+    app.run(host='0.0.0.0', port=port)
