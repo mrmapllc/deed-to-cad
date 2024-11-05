@@ -27,23 +27,24 @@
             <button type="submit">Process Files</button>
         </form>
 
-        <!-- Hidden file input for folder selection -->
-        <input type="file" id="folderPicker" webkitdirectory directory style="display: none;" onchange="setFolderPath()">
+        <!-- Hidden file input for input folder -->
+        <input type="file" id="inputFolderPicker" webkitdirectory directory style="display: none;" onchange="setFolderPath('input_folder', 'inputFolderPicker')">
+        
+        <!-- Hidden file input for output folder -->
+        <input type="file" id="outputFolderPicker" webkitdirectory directory style="display: none;" onchange="setFolderPath('output_folder', 'outputFolderPicker')">
+
     </div>
 
     <script>
         function selectFolder(inputId) {
-            const folderPicker = document.getElementById("folderPicker");
-            folderPicker.setAttribute("data-target", inputId);
+            // Determine which folder picker to use based on the input field
+            const folderPicker = inputId === 'input_folder' ? document.getElementById("inputFolderPicker") : document.getElementById("outputFolderPicker");
             folderPicker.click();
         }
     
-        function setFolderPath() {
-            const folderPicker = document.getElementById("folderPicker");
-            const inputId = folderPicker.getAttribute("data-target");
-            
-            if (folderPicker.files.length > 0) {  // Check if a folder was actually selected
-                // Extract the folder path from the first selected file’s relative path
+        function setFolderPath(inputId, pickerId) {
+            const folderPicker = document.getElementById(pickerId);
+            if (folderPicker.files.length > 0) {  // Check if a folder was selected
                 const path = folderPicker.files[0].webkitRelativePath.split("/")[0];
                 document.getElementById(inputId).value = path;
             } else {
