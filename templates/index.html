@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate CAD from deed</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Generate CAD from deed</h1>
+        <form action="/" method="post">
+            <!-- Input Folder Section -->
+            <label for="input_folder">Input Folder Path:</label>
+            <div class="folder-picker">
+                <input type="text" id="input_folder" name="input_folder" required>
+                <button type="button" onclick="selectFolder('input_folder')">Browse</button>
+            </div>
+            
+            <!-- Output Folder Section -->
+            <label for="output_folder">Output Folder Path:</label>
+            <div class="folder-picker">
+                <input type="text" id="output_folder" name="output_folder" required>
+                <button type="button" onclick="selectFolder('output_folder')">Browse</button>
+            </div>
+
+            <button type="submit">Generate CAD from deed</button>
+        </form>
+
+        <!-- Hidden file input for folder selection -->
+        <input type="file" id="folderPicker" webkitdirectory directory style="display: none;" onchange="setFolderPath()">
+    </div>
+
+    <script>
+        // JavaScript to handle folder selection
+        function selectFolder(inputId) {
+            const folderPicker = document.getElementById("folderPicker");
+            folderPicker.setAttribute("data-target", inputId); // Store the target input field ID
+            folderPicker.click(); // Trigger click to open folder dialog
+        }
+
+        function setFolderPath() {
+            const folderPicker = document.getElementById("folderPicker");
+            const inputId = folderPicker.getAttribute("data-target");
+            const path = folderPicker.files[0].webkitRelativePath.split("/")[0]; // Get the selected folder path
+            document.getElementById(inputId).value = path;
+        }
+    </script>
+</body>
+</html>

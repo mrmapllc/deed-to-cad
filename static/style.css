@@ -1,0 +1,100 @@
+/* style.css */
+
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Container for Form */
+.container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Heading Style */
+h1 {
+    color: #4a5568;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 5px rgba(49, 130, 206, 0.2);
+}
+
+/* Button Style */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3182ce;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2b6cb0;
+}
+
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(49, 130, 206, 0.3);
+}
+
+/* Additional styles in style.css */
+
+/* Style for the folder-picker container */
+.folder-picker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Compact style for the "Choose Folder" button */
+.folder-picker button {
+    width: 80px; /* Set a fixed width to control button size */
+    padding: 10px 8px; /* Reduce padding for a more compact look */
+    background-color: #3182ce;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    text-align: center; /* Center-align text within the button */
+}
+
+.folder-picker button:hover {
+    background-color: #2b6cb0;
+}
+
+.folder-picker button:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(49, 130, 206, 0.3);
+}
