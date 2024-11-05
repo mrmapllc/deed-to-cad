@@ -14,37 +14,34 @@
             <label for="input_folder">Input Folder Path:</label>
             <div class="folder-picker">
                 <input type="text" id="input_folder" name="input_folder" required>
-                <button type="button" onclick="selectFolder('input_folder')">Browse</button>
+                <button type="button" onclick="selectFolder('input_folder', 'inputFolderPicker')">Browse</button>
             </div>
             
             <!-- Output Folder Section -->
             <label for="output_folder">Output Folder Path:</label>
             <div class="folder-picker">
                 <input type="text" id="output_folder" name="output_folder" required>
-                <button type="button" onclick="selectFolder('output_folder')">Browse</button>
+                <button type="button" onclick="selectFolder('output_folder', 'outputFolderPicker')">Browse</button>
             </div>
 
             <button type="submit">Process Files</button>
         </form>
 
-        <!-- Hidden file input for input folder -->
+        <!-- Hidden file inputs for folder selection -->
         <input type="file" id="inputFolderPicker" webkitdirectory directory style="display: none;" onchange="setFolderPath('input_folder', 'inputFolderPicker')">
-        
-        <!-- Hidden file input for output folder -->
         <input type="file" id="outputFolderPicker" webkitdirectory directory style="display: none;" onchange="setFolderPath('output_folder', 'outputFolderPicker')">
-
     </div>
 
     <script>
-        function selectFolder(inputId) {
-            // Determine which folder picker to use based on the input field
-            const folderPicker = inputId === 'input_folder' ? document.getElementById("inputFolderPicker") : document.getElementById("outputFolderPicker");
-            folderPicker.click();
+        function selectFolder(inputId, pickerId) {
+            const folderPicker = document.getElementById(pickerId);
+            folderPicker.value = "";  // Reset the file input value to trigger new selection
+            folderPicker.click();     // Open the folder dialog
         }
-    
+
         function setFolderPath(inputId, pickerId) {
             const folderPicker = document.getElementById(pickerId);
-            if (folderPicker.files.length > 0) {  // Check if a folder was selected
+            if (folderPicker.files.length > 0) {  // Ensure that a folder was selected
                 const path = folderPicker.files[0].webkitRelativePath.split("/")[0];
                 document.getElementById(inputId).value = path;
             } else {
@@ -52,6 +49,5 @@
             }
         }
     </script>
-
 </body>
 </html>
